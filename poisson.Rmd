@@ -14,7 +14,7 @@ In this learning module, you'll be familiarized with **Poisson Regression** as a
 - The number of elected Republican congress members
 - The number of crimes that occur in a particular area
 
-As you can imagine, you would want to leverage a statistical technique that assumes a **distribution of counts** for the outcome variable. One distrubtion that meets this constraint is the **Poisson distribution**, which can be used as in a **generalized linear model**. In the sections below, you'll review the Poisson distribution, implement a Poisson regression, and interpret the results. 
+As you can imagine, you would want to leverage a statistical technique that assumes a **distribution of counts** for the outcome variable. One distribution that meets this constraint is the **Poisson distribution**, which can be used as in a **generalized linear model**. In the sections below, you'll review the Poisson distribution, implement a Poisson regression, and interpret the results.
 
 ## Resoures
 You may find the following resources helpful in learning about Poisson regression:
@@ -25,7 +25,7 @@ You may find the following resources helpful in learning about Poisson regressio
 - [Model fit](https://onlinecourses.science.psu.edu/stat501/node/377)
 
 ## Poisson Distribution
-As you may recall from earlier in the course, the **Poisson Distribution** is a distribution of count values. The distribution is described by a **single parameter** lambda ($\lambda$). Note, 
+As you may recall from earlier in the course, the **Poisson Distribution** is a distribution of count values. The distribution is described by a **single parameter** lambda ($\lambda$). Note,
 
 > _In a Poisson distribution, the **mean** is equal to the **variance**. This is captured in the single parameter, lambda ($\lambda$)_.
 
@@ -37,7 +37,7 @@ Given the above formula, the probaility of observing 2 events if the mean number
 
 $$ P\left( 2\ events \right) =\frac { { 3 }^{2}{ e }^{-3  } }{  2!} =  .22$$
 
-Below are the randomly generated Poisson distributions for $\lambda=2$, $\lambda=10$, $\lambda=100$ (code found [here](https://leanpub.com/regmods/read#leanpub-auto-example-poisson-regression)): 
+Below are the randomly generated Poisson distributions for $\lambda=2$, $\lambda=10$, $\lambda=100$ (code found [here](https://leanpub.com/regmods/read#leanpub-auto-example-poisson-regression)):
 
 ```{r, echo=FALSE}
 # Source: https://leanpub.com/regmods/read#leanpub-auto-example-poisson-regression
@@ -53,23 +53,23 @@ When modeling count data, it is important to **check the distribution** of your 
 The formula for fitting an outcome variable with a Poisson distribution is a type of **Generalized Linear Model**. The **link** between the **linear** set of inputs and the output is a **log-link**. At a glance, this seems similar to logging the outcome variable and running a linear regression. However, directly modeling the log of the outcome is not possible if(when) the _count is zero_ ($log(0) = -Inf$). As such, Poisson regressions model the **log of the expected value** of the outcome, given a vector of input variables ([source](https://leanpub.com/regmods/read#leanpub-auto-example-poisson-regression)):
 
 $$log\left( E [{ Y }_{i } | {X  }_{i }={x }_{i}] \right) =log\left({\mu }_{i} \right) ={\beta  }_{ 0 } +{  \beta}_{  1}{x}_{i}$$
-In the equation above, the **log of the expected value of ${Y}_{i}$ given ${X}_{i}$** is linearly approximated using ${B  }_{ 0 } +{  B}_{  1}{x}_{i}$. 
+In the equation above, the **log of the expected value of ${Y}_{i}$ given ${X}_{i}$** is linearly approximated using ${B  }_{ 0 } +{  B}_{  1}{x}_{i}$.
 
 Similarly to Logistic regression, the coefficients (betas) are obtained through a _Maximum Likelihood Estimation_ that seeks to produce a formula that maximizes the probability of observing the data. While this MLE procedure is beyond the scope of this course, Poisson models are easily implemented in R or Python.
 
 ## Generalized Linear Models
 As noted above, Poisson models are in the family of Generalized Linear Models. The following excerpt from [this book](https://www.amazon.com/Analysis-Regression-Multilevel-Hierarchical-Models/dp/052168689X) describes them well:
 
->"_Generalized linear modeling_ is a framework for statistical analysis that includes linear and logistic regression as special cases. Linear regression directly predictes continuous data $y$ from a _linear predictor_ $X\beta = {\beta}_0 + {X}_{1}{\beta}_1 + ... + + {X}_{k}{\beta}_k$. Logistic regression predicts $Pr(y = 1)$ for binary data from a linear preditor with an inverse-logit transofmration. A generalized linear model involves:
+>"_Generalized linear modeling_ is a framework for statistical analysis that includes linear and logistic regression as special cases. Linear regression directly predicts continuous data $y$ from a _linear predictor_ $X\beta = {\beta}_0 + {X}_{1}{\beta}_1 + ... + + {X}_{k}{\beta}_k$. Logistic regression predicts $Pr(y = 1)$ for binary data from a linear predictor with an inverse-logit transformation. A generalized linear model involves:
 
->1. A data vecotr $y = (y_1, ..., y_n)$
-2. Precitors $X$ and coefficnets $\beta$, forming a inear predictor $X\beta$
-3. A _link function $g$_, yielding a vector of transofrmed data $\hat { y} ={ g }^{  -1}(X\beta)$ that are used to model the data
-4. A data distirubtion, $p(y|\hat{y})$
-5. Possibly other parameters, such as variances, overdispersions, and cutpoints,
+>1. A data vector $y = (y_1, ..., y_n)$
+2. Predictors $X$ and coefficients $\beta$, forming a linear predictor $X\beta$
+3. A _link function $g$_, yielding a vector of transformed data $\hat { y} ={ g }^{  -1}(X\beta)$ that are used to model the data
+4. A data distribution, $p(y|\hat{y})$
+5. Possibly other parameters, such as variances, over-dispersions, and cut-points,
 involved in the predictors, link function, and data distribution." (p.109)
 
-As such, we assume a **Poisson distribution** and use a _logartithmic transformation_ as the link for a Poisson regression, which allows the set of predicted values ($\hat{y}$)to be **positive**. 
+As such, we assume a **Poisson distribution** and use a _logarithmic transformation_ as the link for a Poisson regression, which allows the set of predicted values ($\hat{y}$)to be **positive**.
 
 ## Implementation
 Implementing a Poisson model in R or Python is a straightforward procedure. Using the generalized linear model function (`glm`), a model can be easily declared:
@@ -92,7 +92,7 @@ p <- within(p, {
 We can see that the distribution of the number of awards is (roughly) Poisson:
 
 ```{r echo=FALSE}
-# Create a histrogram of the outcome variable
+# Create a histogram of the outcome variable
 hist(p$num_awards, xlab="Num. Awards", ylab = "Count", main="Distribution of Awards Received")
 ```
 
@@ -123,7 +123,7 @@ The **ratio** between these two values can be reduced to:
 
 $$ \frac{E [{ Y }_{i + 1 } | {X  }_{i }={x }_{i+1}]}{E [{ Y }_{i } | {X  }_{i }={x }_{i}]} = e^{\beta_1}$$
 
-Thus, when we **exponentiate our $\beta_1$** value, we can calculate the **proportial increase in the expected value** of our outcome variable. 
+Thus, when we **exponentiate our $\beta_1$** value, we can calculate the **proportional increase in the expected value** of our outcome variable.
 
 ```{r echo=FALSE}
 # Round values for upcoming paragraph
@@ -131,10 +131,10 @@ coef <- round(m1$coefficients[4],2)
 exp.coef <- round(exp(m1$coefficients[4]),2)
 
 ```
-Using the example above, when we exponentiate our $\beta_1$ value, it returns the **proportional increase** in the _expected_ number of awards (for each unit increase in math exam score). The estimated coefficient for score is `r coef`, which (when exponentiated) is `r exp.coef`. Thus, the **expected number of awards** increases by a factor of `r exp.coef` for each unit increase in math score. 
+Using the example above, when we exponentiate our $\beta_1$ value, it returns the **proportional increase** in the _expected_ number of awards (for each unit increase in math exam score). The estimated coefficient for score is `r coef`, which (when exponentiated) is `r exp.coef`. Thus, the **expected number of awards** increases by a factor of `r exp.coef` for each unit increase in math score.
 
 ## Evaluation
-Now that we have an interpretation of the **beta values**, we also need a way to evaluate the model fit. The simplest way to do this is to generate a set of predictions and visualize the relationship between the predictions and the actual values. 
+Now that we have an interpretation of the **beta values**, we also need a way to evaluate the model fit. The simplest way to do this is to generate a set of predictions and visualize the relationship between the predictions and the actual values.
 
 Using the `predict` function (part of `glm`), it's simple to generate predictions:
 
@@ -143,13 +143,13 @@ Using the `predict` function (part of `glm`), it's simple to generate prediction
 p$preds <- predict(m1, p, type = 'response')
 ```
 
-We can see how the predicted number of awards increases with math score (for students in each progam):
+We can see how the predicted number of awards increases with math score (for students in each program):
 
 ```{r echo=FALSE}
 ggplot(data=p, aes(x=math, y=preds, group = prog, colour = prog)) +
-    geom_line() + 
+    geom_line() +
     labs(x="Math Score", y="Predicted Number of Awards") +
-    ggtitle("Predicted Awards by Program") + 
+    ggtitle("Predicted Awards by Program") +
     scale_colour_discrete('Program')     
 ```
 
@@ -157,10 +157,10 @@ These predicted values make intuitive sense. However, when we add the points the
 
 ```{r echo=FALSE}
 ggplot(data=p, aes(x=math, y=preds, group = prog, colour = prog)) +
-    geom_line() + 
+    geom_line() +
     geom_point(aes(x=math, y=num_awards, group=prog, colour = prog)) +
     labs(x="Math Score", y="Predicted Number of Awards") +
-    ggtitle("Predicted Awards by Program") + 
+    ggtitle("Predicted Awards by Program") +
     scale_colour_discrete('Program')     
 ```
 
@@ -168,9 +168,9 @@ Alteratively, we can just compare our predictions directly to our data:
 
 ```{r echo=FALSE}
 ggplot(data=p, aes(x=num_awards, y=preds, group = prog, colour = prog)) +
-    geom_point() + 
+    geom_point() +
     labs(x="Num. awards (observed)", y="Num. awards (predicted)") +
-    ggtitle("Observed v.s. predicted awards") + 
+    ggtitle("Observed v.s. predicted awards") +
     scale_colour_discrete('Program')     
 ```
 
@@ -211,4 +211,4 @@ Luckily, the deviance is returned by our model, and can be accessed as `model.na
 deviance.p.value <- pchisq(m1$deviance, m1$df.residual, lower.tail=FALSE)
 ```
 
-The observed deviance p value of `r round(deviance.p.value,2)` indicates that we **cannot reject our model** based on this statistic. 
+The observed deviance p value of `r round(deviance.p.value,2)` indicates that we **cannot reject our model** based on this statistic.
